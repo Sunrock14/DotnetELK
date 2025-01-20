@@ -1,0 +1,51 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{8CF09B20-529C-42E1-93AD-8ACDF13A453D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Fakedata", "Fakedata", "{C9DDDBDD-61DA-47AC-A9CB-56CFD08B4DAE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ELK.App", "ELK.App\ELK.App.csproj", "{726E962B-5B2E-426F-9F5F-991B3F85336A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ELK.AppHost", "ELK.AppHost\ELK.AppHost.csproj", "{57275B3A-5ECB-4A13-A940-855D49DF6FF0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ELK.ServiceDefaults", "ELK.ServiceDefaults\ELK.ServiceDefaults.csproj", "{1A48B01B-A89A-42BF-B79B-ADD2F1C96B83}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ELK.FakeData", "Fakedata\ELK.FakeData\ELK.FakeData.csproj", "{9716A613-E361-4FB6-9355-89BAA5EE4E61}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8CF09B20-529C-42E1-93AD-8ACDF13A453D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CF09B20-529C-42E1-93AD-8ACDF13A453D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CF09B20-529C-42E1-93AD-8ACDF13A453D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CF09B20-529C-42E1-93AD-8ACDF13A453D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{726E962B-5B2E-426F-9F5F-991B3F85336A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{726E962B-5B2E-426F-9F5F-991B3F85336A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{726E962B-5B2E-426F-9F5F-991B3F85336A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{726E962B-5B2E-426F-9F5F-991B3F85336A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57275B3A-5ECB-4A13-A940-855D49DF6FF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57275B3A-5ECB-4A13-A940-855D49DF6FF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57275B3A-5ECB-4A13-A940-855D49DF6FF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57275B3A-5ECB-4A13-A940-855D49DF6FF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A48B01B-A89A-42BF-B79B-ADD2F1C96B83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A48B01B-A89A-42BF-B79B-ADD2F1C96B83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A48B01B-A89A-42BF-B79B-ADD2F1C96B83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A48B01B-A89A-42BF-B79B-ADD2F1C96B83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9716A613-E361-4FB6-9355-89BAA5EE4E61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9716A613-E361-4FB6-9355-89BAA5EE4E61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9716A613-E361-4FB6-9355-89BAA5EE4E61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9716A613-E361-4FB6-9355-89BAA5EE4E61}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9716A613-E361-4FB6-9355-89BAA5EE4E61} = {C9DDDBDD-61DA-47AC-A9CB-56CFD08B4DAE}
+	EndGlobalSection
+EndGlobal

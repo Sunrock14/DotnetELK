@@ -1,0 +1,159 @@
+﻿ /****Nasıl Kullanılır****/
+    /*
+     Döküman olması için CHATGPT'ye yazdırılmıştır.
+
+
+    // Elasticsearch bağlantı bilgileri  
+    string elasticsearchUrl = "http://localhost:9200"; // Elasticsearch sunucusunun URL'si  
+    string defaultIndex = "products"; // Varsayılan indeks adı  
+
+    // SearchHelper örneği oluşturma  
+    var searchHelper = new SearchHelper<Product>(elasticsearchUrl, defaultIndex);
+
+    *******************************************************
+    *******************************************************
+
+    1. CreateIndexAsync - Yeni bir Elasticsearch indeksi oluşturma
+    var searchHelper = new SearchHelper<Product>("http://localhost:9200", "products");  
+    bool isIndexCreated = await searchHelper.CreateIndexAsync("products");  
+    if (isIndexCreated)  
+    {  
+        Console.WriteLine("Index başarıyla oluşturuldu.");  
+    }  
+    else  
+    {  
+        Console.WriteLine("Index oluşturulamadı.");  
+    }  
+
+    *******************************************************
+    *******************************************************
+
+    IndexDocumentAsync - Tek bir döküman indeksleme
+    csharp
+    var product = new Product  
+    {  
+        Id = "1",  
+        Name = "Laptop",  
+        Description = "High performance laptop",  
+        Price = 1500  
+    };  
+
+    bool isIndexed = await searchHelper.IndexDocumentAsync(product, product.Id);  
+
+    if (isIndexed)  
+    {  
+        Console.WriteLine("Döküman başarıyla indekslendi.");  
+    }  
+    else  
+    {  
+        Console.WriteLine("Döküman indekslenemedi.");  
+    }
+    *******************************************************
+    *******************************************************
+     3. BulkIndexAsync - Çoklu döküman indeksleme
+    csharp
+    var products = new List<Product>  
+    {  
+        new Product { Id = "2", Name = "Phone", Description = "Smartphone with 128GB storage", Price = 800 },  
+        new Product { Id = "3", Name = "Tablet", Description = "10-inch screen tablet", Price = 600 }  
+    };  
+
+    bool isBulkIndexed = await searchHelper.BulkIndexAsync(products);  
+
+    if (isBulkIndexed)  
+    {  
+        Console.WriteLine("Dökümanlar başarıyla indekslendi.");  
+    }  
+    else  
+    {  
+        Console.WriteLine("Dökümanlar indekslenemedi.");  
+    } 
+
+    *******************************************************
+    *******************************************************
+    4. GetDocumentAsync - ID ile döküman getirme
+    csharp
+    var product = await searchHelper.GetDocumentAsync("1");  
+
+    if (product != null)  
+    {  
+        Console.WriteLine($"Ürün bulundu: {product.Name} - {product.Description}");  
+    }  
+    else  
+    {  
+        Console.WriteLine("Ürün bulunamadı.");  
+    }  
+    *******************************************************
+    *******************************************************
+
+    5. UpdateDocumentAsync - Var olan dökümanı güncelleme
+    csharp
+    var updatedProduct = new Product  
+    {  
+        Id = "1",  
+        Name = "Laptop",  
+        Description = "Updated description for high performance laptop",  
+        Price = 1400  
+    };  
+
+    bool isUpdated = await searchHelper.UpdateDocumentAsync("1", updatedProduct);  
+
+    if (isUpdated)  
+    {  
+        Console.WriteLine("Döküman başarıyla güncellendi.");  
+    }  
+    else  
+    {  
+        Console.WriteLine("Döküman güncellenemedi.");  
+    }
+    *******************************************************
+    *******************************************************
+    6. DeleteDocumentAsync - ID ile döküman silme
+    csharp
+    bool isDeleted = await searchHelper.DeleteDocumentAsync("1");  
+
+    if (isDeleted)  
+    {  
+        Console.WriteLine("Döküman başarıyla silindi.");  
+    }  
+    else  
+    {  
+        Console.WriteLine("Döküman silinemedi.");  
+    }
+    *******************************************************
+    *******************************************************
+    7. SearchAsync - Tek alanda metin araması
+    csharp
+    var results = await searchHelper.SearchAsync("Laptop", "name");  
+
+    foreach (var product in results)  
+    {  
+        Console.WriteLine($"Bulunan ürün: {product.Name} - {product.Description}");  
+    } 
+    *******************************************************
+    *******************************************************
+    8. SearchMultipleFieldsAsync - Birden fazla alanda metin araması
+    csharp
+    var fields = new[] { "name", "description" };  
+    var results = await searchHelper.SearchMultipleFieldsAsync("performance", fields);  
+
+    foreach (var product in results)  
+    {  
+        Console.WriteLine($"Bulunan ürün: {product.Name} - {product.Description}");  
+    }
+
+    9. FilterAsync - Özel sorgu ile arama
+    csharp
+    var results = await searchHelper.FilterAsync(q => q  
+        .Range(r => r  
+            .Field(f => f.Price)  
+            .GreaterThan(500)  
+            .LessThan(1000)  
+        )  
+    );  
+
+    foreach (var product in results)  
+    {  
+        Console.WriteLine($"Bulunan ürün: {product.Name} - {product.Price}");  
+    }  
+     */

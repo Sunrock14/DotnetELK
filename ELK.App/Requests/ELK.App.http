@@ -1,0 +1,6 @@
+@ELK.App_HostAddress = http://localhost:5111
+
+GET {{ELK.App_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
