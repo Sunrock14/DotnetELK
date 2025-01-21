@@ -6,15 +6,15 @@ namespace ELK.FakeData.Services;
 
 public interface IDataService
 {
-    List<Product> ProductCreate();
+    List<Product> ProductCreate(int quantity);
 }
 
 public class DataManager : IDataService
 {
-    public List<Product> ProductCreate()
+    public List<Product> ProductCreate(int quantity = 10)
     {
         var result = new DataGenerator();
-        var products = DataGenerator.GenerateByCount<Product, ProductFaker>(100);
+        var products = DataGenerator.GenerateByCount<Product, ProductFaker>(quantity);
         return products;
     }
 }

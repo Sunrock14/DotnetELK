@@ -137,9 +137,9 @@ public class ElasticService : IElasticService
     }
 
     public async Task<SearchResult<T>> FilterAsync<T>(
-        Func<QueryDescriptor<T>, Query> query, 
-        string indexName, 
-        int page = 1, 
+        Func<QueryDescriptor<T>, QueryDescriptor<T>> query,
+        string indexName,
+        int page = 1,
         int pageSize = 10) where T : class
     {
         var response = await _client.SearchAsync<T>(s => s
