@@ -5,7 +5,7 @@ using Microsoft.Extensions.Options;
 
 namespace ELK.App.Services;
 
-public class ElasticService<T> : IElasticService<T> where T : class
+public class ElasticService : IElasticService
 {
     private readonly ElasticsearchClient _client;
     private readonly IOptionsSnapshot<ElasticsearchSettings> _search;
@@ -13,8 +13,9 @@ public class ElasticService<T> : IElasticService<T> where T : class
     public ElasticService(string url, string defaultIndex, string username = null, string password = null,
         IOptionsSnapshot<ElasticsearchSettings> search = null)
     {
-        var settings = new ElasticsearchClientSettings(new Uri(url))
-            .DefaultIndex(defaultIndex);
+        _search = search;
+
+        var settings = new ElasticsearchClientSettings(new Uri(url)).DefaultIndex(defaultIndex);
 
         if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password))
         {
@@ -22,10 +23,10 @@ public class ElasticService<T> : IElasticService<T> where T : class
         }
 
         _client = new ElasticsearchClient(settings);
-        _search = search;
     }
 
-    public async Task<bool> CreateIndexAsync(string indexName)
+    public async Task<bool> CreateIndexAsync(
+        string indexName)
     {
         var response = await _client.Indices.CreateAsync(indexName, c => c
             .Settings(s => s
@@ -36,13 +37,18 @@ public class ElasticService<T> : IElasticService<T> where T : class
         return response.IsValidResponse;
     }
 
-    public async Task<bool> IndexDocumentAsync(T document, string id, string indexName)
+    public async Task<bool> IndexDocumentAsync<T>(
+        T document, 
+        string id, 
+        string indexName) where T : class
     {
         var response = await _client.IndexAsync(document, i => i.Index(indexName).Id(id));
         return response.IsValidResponse;
     }
 
-    public async Task<bool> BulkIndexAsync(IEnumerable<T> documents, string indexName)
+    public async Task<bool> BulkIndexAsync<T>(
+        IEnumerable<T> documents, 
+        string indexName) where T : class
     {
         var bulkAll = await _client.BulkAsync(b => b
             .Index(indexName)
@@ -51,31 +57,42 @@ public class ElasticService<T> : IElasticService<T> where T : class
         return bulkAll.IsValidResponse;
     }
 
-    public async Task<T> GetDocumentAsync(string id, string indexName)
+    public async Task<T> GetDocumentAsync<T>(
+        string indexName, 
+        string id) where T : class
     {
         var response = await _client.GetAsync<T>(id, g => g.Index(indexName));
         return response.IsValidResponse ? response.Source : null;
     }
 
-    public async Task<bool> UpdateDocumentAsync(string id, T document, string indexName)
+    public async Task<bool> UpdateDocumentAsync<T>(
+        string indexName, 
+        string id, 
+        T document) where T : class
     {
-        var response = await _client.UpdateAsync<T, T>(indexName, id, u => u
-            .Doc(document));
+        var response = await _client.UpdateAsync<T, T>(indexName, id, u => u.Doc(document));
         return response.IsValidResponse;
     }
 
-    public async Task<bool> DeleteDocumentAsync(string id, string indexName)
+    public async Task<bool> DeleteDocumentAsync<T>(
+        string indexName, 
+        string id) where T : class
     {
         var response = await _client.DeleteAsync<T>(indexName, id);
         return response.IsValidResponse;
     }
 
-    public async Task<List<T>> SearchAsync(string searchText, string field, string indexName, int take = 10)
+    public async Task<SearchResult<T>> SearchAsync<T>(
+        string searchText, 
+        string field, 
+        string indexName, 
+        int page = 1, 
+        int pageSize = 10) where T : class
     {
         var response = await _client.SearchAsync<T>(s => s
             .Index(indexName)
-            .From(0)
-            .Size(take)
+            .From((page - 1) * pageSize)
+            .Size(pageSize)
             .Query(q => q
                 .Match(m => m
                     .Field(field)
@@ -83,15 +100,26 @@ public class ElasticService<T> : IElasticService<T> where T : class
                 )
             ));
 
-        return response.IsValidResponse ? response.Documents.ToList() : new List<T>();
+        return new SearchResult<T>
+        {
+            Items = response.IsValidResponse ? response.Documents.ToList() : new List<T>(),
+            Total = response.Total,
+            Page = page,
+            PageSize = pageSize
+        };
     }
 
-    public async Task<List<T>> SearchMultipleFieldsAsync(string searchText, string[] fields, string indexName, int take = 10)
+    public async Task<SearchResult<T>> SearchMultipleFieldsAsync<T>(
+        string searchText, 
+        string[] fields, 
+        string indexName, 
+        int page = 1, 
+        int pageSize = 10) where T : class
     {
         var response = await _client.SearchAsync<T>(s => s
             .Index(indexName)
-            .From(0)
-            .Size(take)
+            .From((page - 1) * pageSize)
+            .Size(pageSize)
             .Query(q => q
                 .MultiMatch(mm => mm
                     .Fields(fields)
@@ -99,18 +127,34 @@ public class ElasticService<T> : IElasticService<T> where T : class
                 )
             ));
 
-        return response.IsValidResponse ? response.Documents.ToList() : new List<T>();
+        return new SearchResult<T>
+        {
+            Items = response.IsValidResponse ? response.Documents.ToList() : new List<T>(),
+            Total = response.Total,
+            Page = page,
+            PageSize = pageSize
+        };
     }
 
-    public async Task<List<T>> FilterAsync(Func<QueryDescriptor<T>, Query> query, string indexName, int take = 10)
+    public async Task<SearchResult<T>> FilterAsync<T>(
+        Func<QueryDescriptor<T>, Query> query, 
+        string indexName, 
+        int page = 1, 
+        int pageSize = 10) where T : class
     {
         var response = await _client.SearchAsync<T>(s => s
             .Index(indexName)
-            .From(0)
-            .Size(take)
+            .From((page - 1) * pageSize)
+            .Size(pageSize)
             .Query(q => query(q))
         );
 
-        return response.IsValidResponse ? response.Documents.ToList() : new List<T>();
+        return new SearchResult<T>
+        {
+            Items = response.IsValidResponse ? response.Documents.ToList() : new List<T>(),
+            Total = response.Total,
+            Page = page,
+            PageSize = pageSize
+        };
     }
 }
