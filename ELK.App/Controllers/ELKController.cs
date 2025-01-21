@@ -2,7 +2,6 @@ using ELK.App.Services;
 using ELK.FakeData.Models;
 using ELK.FakeData.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.Runtime.CompilerServices;
 
 namespace ELK.App.Controllers;
 
@@ -10,7 +9,7 @@ namespace ELK.App.Controllers;
 [Route("[controller]")]
 public class ELKController(IDataService dataService) : ControllerBase
 {
-    private string elasticsearchUrl = "http://localhost:9200/"; 
+    private string elasticsearchUrl = "http://localhost:9200/";
     private string defaultIndex = "products";
 
     [HttpGet("[action]")]
@@ -20,7 +19,6 @@ public class ELKController(IDataService dataService) : ControllerBase
         bool isIndexCreated = await searchHelper.CreateIndexAsync(indexName);
         return Ok(isIndexCreated);
     }
-    
     [HttpGet("[action]")]
     public async Task<IActionResult> IndexDocumentAsync([FromBody] Product product)
     {
@@ -41,7 +39,7 @@ public class ELKController(IDataService dataService) : ControllerBase
     public async Task<IActionResult> GetData(string id)
     {
         var searchHelper = new ElasticService(elasticsearchUrl, defaultIndex);
-        var product = await searchHelper.GetDocumentAsync<Product>("products",id.ToString());
+        var product = await searchHelper.GetDocumentAsync<Product>("products", id.ToString());
         return Ok(product);
     }
     [HttpDelete("[action]")]
@@ -70,11 +68,10 @@ public class ELKController(IDataService dataService) : ControllerBase
     {
         var fields = new[] { "name", "description" };
         var searchHelper = new ElasticService(elasticsearchUrl, defaultIndex);
-        var results = await searchHelper.SearchMultipleFieldsAsync<Product>(term, fields,"products");
+        var results = await searchHelper.SearchMultipleFieldsAsync<Product>(term, fields, "products");
 
         return Ok(results);
     }
-    
     [HttpGet("[action]")]
     public async Task<IActionResult> Filter(double greater, double less)
     {
@@ -90,7 +87,7 @@ public class ELKController(IDataService dataService) : ControllerBase
             indexName: "products",
             page: 1,
             pageSize: 10
-        ); 
+        );
         return Ok(result);
     }
 
