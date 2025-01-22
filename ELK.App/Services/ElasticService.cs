@@ -8,21 +8,21 @@ namespace ELK.App.Services;
 public class ElasticService : IElasticService
 {
     private readonly ElasticsearchClient _client;
-    private readonly IOptionsSnapshot<ElasticsearchSettings> _search;
+    private readonly ElasticsearchSettings _settings;
 
-    public ElasticService(string url, string defaultIndex, string username = null, string password = null,
-        IOptionsSnapshot<ElasticsearchSettings> search = null)
+    public ElasticService(IOptions<ElasticsearchSettings> settings)
     {
-        _search = search;
+        _settings = settings.Value;
 
-        var settings = new ElasticsearchClientSettings(new Uri(url)).DefaultIndex(defaultIndex);
+        var clientSettings = new ElasticsearchClientSettings(new Uri(_settings.Url))
+            .DefaultIndex(_settings.DefaultIndex);
 
-        if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password))
+        if (!string.IsNullOrEmpty(_settings.Username) && !string.IsNullOrEmpty(_settings.Password))
         {
-            settings.Authentication(new BasicAuthentication(username, password));
+            clientSettings.Authentication(new BasicAuthentication(_settings.Username, _settings.Password));
         }
 
-        _client = new ElasticsearchClient(settings);
+        _client = new ElasticsearchClient(clientSettings);
     }
 
     public async Task<bool> CreateIndexAsync(
