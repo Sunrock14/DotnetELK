@@ -12,7 +12,6 @@ public class ELKController(
     IElasticService _elasticService) : 
     ControllerBase
 {
-
     [HttpGet("[action]")]
     public async Task<IActionResult> CreateIndex(string indexName)
     {
